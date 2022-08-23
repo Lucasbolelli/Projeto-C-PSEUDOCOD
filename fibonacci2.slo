@@ -1,0 +1,17 @@
+início {
+    
+    inteiro:n;
+    inteiro: primeiro;
+    inteiro: segundo;
+    
+    primeiro=0;
+    segundo=1;
+    
+        para n de 1 até 10 passo 1{
+            
+            escreva(primeiro);
+            primeiro=primeiro+segundo;
+            segundo=primeiro-segundo;
+    }        
+    
+}

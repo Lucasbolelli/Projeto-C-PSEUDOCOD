@@ -1,0 +1,143 @@
+tipo tabuleiro{
+    caractere: m[3][3];
+}
+
+tipo jogador{
+    caractere: nome;
+    caractere: simbolo;
+}
+tipo jogada{
+    inteiro: l;
+    inteiro: c;
+}
+função criar_jogadores(jogador: jogadores[2]){
+    jogadores[0].nome = "A";
+    jogadores[0].simbolo = "X";
+    
+    jogadores[1].nome="B";
+    jogadores[1].simbolo="O";
+}
+função zerar(tabuleiro: t){
+    inteiro: l;
+    inteiro: c;
+        para l de 0 até 2 passo 1{
+            para c de 0 até 2 passo 1{
+                t.m[l][c]= " ";
+            }
+        }
+}
+função imprimir(tabuleiro: t){
+    inteiro: l;
+        para l de 0 até 2 passo 1{
+            escreval(t.m[l][0]);
+            escreval(" | ");
+            escreval(t.m[l][1]);
+            escreval(" | ");
+            escreva(t.m[l][2]);
+            
+            
+                se(l<2){
+                    escreva("-- --- ---");
+                }
+        }
+}
+função aguardar_jogada(jogador: jogador) -> jogada{
+    jogada: jogada;
+        leia("jogador " + jogador.nome + " => Linha ", jogada.l);
+        leia("jogador " + jogador.nome + " => Coluna ", jogada.c);
+        retorne jogada;
+}
+
+função tabuleiro_cheio(tabuleiro: t) -> lógico{
+    inteiro: l;
+    inteiro: c;
+            para l de 0 até 2 passo 1{
+                para c de 0 até 2 passo 1{
+                   se (t.m[l][c]== " " ){
+                       retorne falso;
+                   }
+                }
+            }
+            
+    retorne verdadeiro;    
+}
+função realizar_jogada(tabuleiro: t, jogada: jogada, jogador: jogador)->lógico {
+        se (t.m[jogada.l][jogada.c] <> " "){
+            retorne falso;
+        }
+    t.m[jogada.l][jogada.c] = jogador.simbolo;
+        retorne verdadeiro;
+    
+}
+função jogo_acabou(tabuleiro: t) -> lógico{
+            //diagonal 1
+        se(t.m[0][0] == t.m[1][1] e t.m[0][0] == t.m[2][2] e t.m[0][0] <> " "){
+                retorne verdadeiro;
+    }
+          //diagonal 2
+        se(t.m[0][2] == t.m[1][1] e t.m[0][2] == t.m[2][0] e t.m[0][2] <> " "){
+                retorne verdadeiro;
+    }
+          //coluna 1
+        se(t.m[0][0] == t.m[1][0] e t.m[0][0] == t.m[2][0] e t.m[0][0] <> " "){
+                retorne verdadeiro;
+    }
+          //coluna 2
+        se(t.m[0][1] == t.m[1][1] e t.m[0][1] == t.m[2][1] e t.m[0][1] <> " "){
+                retorne verdadeiro;
+    }
+          //coluna 3
+        se(t.m[0][2] == t.m[1][2] e t.m[0][2] == t.m[2][2] e t.m[0][2] <> " "){
+                retorne verdadeiro;
+    }
+          //linha 1
+        se(t.m[0][0] == t.m[1][0] e t.m[0][0] == t.m[0][2] e t.m[0][0] <> " "){
+                retorne verdadeiro;
+    }
+          //linha 2
+        se(t.m[1][0] == t.m[1][1] e t.m[1][0] == t.m[1][2] e t.m[1][0] <> " "){
+                retorne verdadeiro;
+    }
+          //linha 3
+        se(t.m[2][0] == t.m[2][1] e t.m[2][0] == t.m[2][2] e t.m[2][0] <> " "){
+                retorne verdadeiro;
+    }
+    
+        retorne falso;
+}
+
+início {
+    tabuleiro: t;
+    jogador: jogadores[2];
+    jogada: jogada;
+    inteiro: turno;
+    
+    
+        zerar(t);
+        criar_jogadores(jogadores);
+        imprimir(t);
+        enquanto(não tabuleiro_cheio(t) e não jogo_acabou(t)){
+            
+        jogada = aguardar_jogada(jogadores[turno]);
+        
+        se (realizar_jogada(t, jogada, jogadores[turno])){
+           imprimir(t);       
+           turno=(turno+1)%2;
+       }senão{
+           escreva("Jogada inválida. Tente novamente.");
+       }
+     //  se (turno == 0){
+        //   turno=1;   
+      // }senão{
+       //    turno=0;
+       
+             se(jogo_acabou(t)){
+           jogador: ganhador;
+           ganhador = jogadores[(turno+1)%2];   
+               escreva("O jogador " + ganhador.nome + " ganhou!");
+       }senão{
+           escreva("Ninguem ganhou");
+       } 
+    } 
+    
+}
